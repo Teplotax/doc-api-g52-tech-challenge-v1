@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "API G52 Tech Challenge",
-    "description": "API de gerenciamento de ordens de serviço para oficinas mecânicas. Permite controlar o ciclo de vida\ncompleto de uma OS, desde a abertura até a entrega do veículo, além de gerenciar clientes, veículos,\npeças, insumos e serviços cadastrados.\n\n---\n\n## Ciclo de vida de uma OS\n\nToda OS percorre um fluxo de status bem definido. As transições válidas são:\n\n| De | Para | Ação |\n|----|------|------|\n| `RECEBIDA` | `EM_DIAGNOSTICO` | Iniciar diagnóstico |\n| `EM_DIAGNOSTICO` | `AGUARDANDO_APROVACAO` | Solicitar aprovação: envia orçamento por e-mail ao cliente |\n| `AGUARDANDO_APROVACAO` | `APROVADA` | Cliente aprova o orçamento (total ou parcial) |\n| `APROVADA` | `EM_EXECUCAO` | Iniciar execução dos serviços |\n| `EM_EXECUCAO` | `FINALIZADA` | Finalizar execução: consome estoque real e libera reservas |\n| `FINALIZADA` | `ENTREGUE` | Entregar veículo: envia nota fiscal por e-mail e limpa tagChave |\n| `CANCELADA` | `DEVOLVIDO` | Devolver veículo fisicamente: limpa tagChave |\n| Qualquer status até `FINALIZADA` | `CANCELADA` | Cancelar OS: libera reservas de estoque |\n\n> `ENTREGUE` e `DEVOLVIDO` são status terminais, nenhuma transição é permitida a partir deles.\n\n---\n\n## Gestão de estoque\n\nO estoque de peças e insumos é controlado em duas camadas:\n\n- **Estoque reservado** (`estoqueReservado`): reservado ao adicionar serviços à OS. Liberado ao cancelar ou finalizar.\n- **Estoque real** (`estoque`): consumido definitivamente apenas na **finalização** da OS.\n\nAo **cancelar** uma OS, o comportamento de liberação depende do status atual:\n- Antes de `APROVADA` (RECEBIDA, EM_DIAGNOSTICO, AGUARDANDO_APROVACAO): libera a reserva de **todos** os serviços.\n- A partir de `APROVADA` (APROVADA, EM_EXECUCAO): libera apenas a reserva dos serviços **aprovados**.\n\n---\n\n## Aprovação do orçamento\n\nAo solicitar aprovação, o sistema:\n1. Altera o status para `AGUARDANDO_APROVACAO`.\n2. Gera o orçamento em PDF e envia ao cliente por e-mail (SMTP).\n3. Inclui no e-mail um link com token HMAC assinado, sem necessidade de login.\n\nO cliente seleciona os serviços que deseja aprovar e confirma. A aprovação pode ser total ou parcial.\n\n---\n\n## Recursos\n\n| Recurso | Descrição |\n|---------|-----------|\n| **Ordens de Serviço** | Ciclo de vida completo da OS |\n| **Clientes** | Cadastro e consulta de clientes |\n| **Veículos** | Cadastro de veículos vinculados a clientes |\n| **Peças** | Cadastro de peças com controle de estoque |\n| **Insumos** | Cadastro de insumos com controle de estoque |\n| **Serviços** | Catálogo de serviços oferecidos pela oficina |\n| **Estoque** | Entrada e saída de estoque por EAN (batch) |\n",
-    "version": "1.0.0"
+    "description": "API de gerenciamento de ordens de serviço para oficinas mecânicas. Permite controlar o ciclo de vida\ncompleto de uma OS, desde a abertura até a entrega do veículo, além de gerenciar clientes, veículos,\npeças, insumos e serviços cadastrados.\n\n---\n\n## Ciclo de vida de uma OS\n\nToda OS percorre um fluxo de status bem definido. As transições válidas são:\n\n| De | Para | Ação |\n|----|------|------|\n| `RECEBIDA` | `EM_DIAGNOSTICO` | Iniciar diagnóstico |\n| `EM_DIAGNOSTICO` | `AGUARDANDO_APROVACAO` | Solicitar aprovação: envia orçamento por e-mail ao cliente |\n| `AGUARDANDO_APROVACAO` | `APROVADA` | Cliente aprova o orçamento (total ou parcial) e há estoque reservado para todos os itens aprovados |\n| `AGUARDANDO_APROVACAO` | `AGUARDANDO_AQUISICAO` | Cliente aprova, mas algum item aprovado não pôde ser reservado por falta de estoque: envia e-mail ao almoxarifado |\n| `AGUARDANDO_AQUISICAO` | `APROVADA` | Almoxarifado confirma a aquisição dos itens em falta: repõe o estoque e reserva os itens pendentes |\n| `APROVADA` | `EM_EXECUCAO` | Iniciar execução dos serviços |\n| `EM_EXECUCAO` | `FINALIZADA` | Finalizar execução: consome estoque real e libera reservas |\n| `FINALIZADA` | `ENTREGUE` | Entregar veículo: envia nota fiscal por e-mail e limpa tagChave |\n| `CANCELADA` | `DEVOLVIDO` | Devolver veículo fisicamente: limpa tagChave |\n| Qualquer status até `FINALIZADA` | `CANCELADA` | Cancelar OS: libera reservas de estoque |\n\n> `ENTREGUE` e `DEVOLVIDO` são status terminais, nenhuma transição é permitida a partir deles.\n\n---\n\n## Gestão de estoque\n\nO estoque de peças e insumos é controlado em duas camadas:\n\n- **Estoque reservado** (`estoqueReservado`): reservado ao adicionar serviços à OS. Liberado ao cancelar ou finalizar.\n- **Estoque real** (`estoque`): consumido definitivamente apenas na **finalização** da OS.\n\nSe, no momento da aprovação, algum item aprovado não tiver estoque disponível suficiente, a OS não avança para\n`APROVADA` e sim para `AGUARDANDO_AQUISICAO`. Um e-mail é enviado ao almoxarifado (`almoxarifado@teplocar.com.br`)\nlistando os itens e quantidades a adquirir, com um link para confirmar a aquisição. Ao confirmar, o estoque é\nreposto, os itens ficam reservados e a OS avança para `APROVADA`.\n\nAo **cancelar** uma OS, o comportamento de liberação depende do status atual:\n- Antes de `APROVADA` (RECEBIDA, EM_DIAGNOSTICO, AGUARDANDO_APROVACAO): libera a reserva de **todos** os serviços.\n- A partir de `APROVADA` (APROVADA, AGUARDANDO_AQUISICAO, EM_EXECUCAO): libera apenas a reserva dos serviços **aprovados** que já estavam reservados.\n\n---\n\n## Aprovação do orçamento\n\nAo solicitar aprovação, o sistema:\n1. Altera o status para `AGUARDANDO_APROVACAO`.\n2. Gera o orçamento em PDF e envia ao cliente por e-mail (SMTP).\n3. Inclui no e-mail um link com token HMAC assinado, sem necessidade de login.\n\nO cliente seleciona os serviços que deseja aprovar e confirma. A aprovação pode ser total ou parcial.\n\n---\n\n## Recursos\n\n| Recurso | Descrição |\n|---------|-----------|\n| **Ordens de Serviço** | Ciclo de vida completo da OS |\n| **Clientes** | Cadastro e consulta de clientes |\n| **Veículos** | Cadastro de veículos vinculados a clientes |\n| **Peças** | Cadastro de peças com controle de estoque |\n| **Insumos** | Cadastro de insumos com controle de estoque |\n| **Serviços** | Catálogo de serviços oferecidos pela oficina |\n| **Estoque** | Entrada e saída de estoque por EAN (batch) |\n",
+    "version": "1.1.0"
   },
   "servers": [
     {
@@ -113,6 +113,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -622,6 +623,7 @@
                 "EM_DIAGNOSTICO",
                 "AGUARDANDO_APROVACAO",
                 "APROVADA",
+                "AGUARDANDO_AQUISICAO",
                 "EM_EXECUCAO",
                 "FINALIZADA",
                 "ENTREGUE",
@@ -712,6 +714,7 @@
                               "EM_DIAGNOSTICO",
                               "AGUARDANDO_APROVACAO",
                               "APROVADA",
+                              "AGUARDANDO_AQUISICAO",
                               "EM_EXECUCAO",
                               "FINALIZADA",
                               "ENTREGUE",
@@ -1087,6 +1090,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -1865,6 +1869,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -2699,6 +2704,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -3518,6 +3524,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -4285,7 +4292,7 @@
           "Ordens de Serviço"
         ],
         "summary": "Aprovar OS",
-        "description": "Aprova a ordem de serviço alterando seu status para APROVADA.\nSe o corpo da requisição contiver uma lista de IDs em `servicosAprovados`, apenas esses serviços serão aprovados (aprovação parcial).\nSe o corpo for omitido ou a lista estiver vazia, todos os serviços serão aprovados.\n",
+        "description": "Aprova a ordem de serviço.\nSe o corpo da requisição contiver uma lista de IDs em `servicosAprovados`, apenas esses serviços serão aprovados (aprovação parcial).\nSe o corpo for omitido ou a lista estiver vazia, todos os serviços serão aprovados.\n\nO status resultante depende do estoque das peças e insumos dos serviços aprovados:\n- Se todos os itens necessários estiverem reservados, o status muda para `APROVADA`.\n- Se algum item não pôde ser reservado por falta de estoque, o status muda para `AGUARDANDO_AQUISICAO` e um e-mail é\n  enviado ao almoxarifado (`almoxarifado@teplocar.com.br`) listando os itens e quantidades a adquirir, com um link\n  para confirmar a aquisição. Ao confirmar, o estoque é reposto, os itens são reservados e a OS avança para `APROVADA`.\n",
         "operationId": "post/ordensDeServico/{osId}/aprovar",
         "parameters": [
           {
@@ -4361,6 +4368,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -5009,6 +5017,120 @@
                         }
                       ]
                     }
+                  },
+                  "ApproveOSAguardandoAquisicaoResponse": {
+                    "value": {
+                      "id": 1,
+                      "status": "AGUARDANDO_AQUISICAO",
+                      "clienteId": 1,
+                      "clienteNomeSocial": "João Silva",
+                      "clienteDocumento": "123.456.789-00",
+                      "veiculoId": 1,
+                      "veiculoPlaca": "ABC1D23",
+                      "complexidade": "MEDIA",
+                      "sintomas": "Barulho ao frear e vibração no volante em altas velocidades",
+                      "tagChave": "001",
+                      "criadaEm": "2024-06-01T10:00:00",
+                      "precoTotal": 810,
+                      "precoTotalAprovado": 810,
+                      "precoServicosDesejados": 485,
+                      "precoServicosNecessarios": 280,
+                      "precoServicosAdicionais": 45,
+                      "justificativaNecessarios": "Identificado desgaste excessivo no disco de freio durante o diagnóstico",
+                      "justificativaAdicionais": "Mecânico identificou lâmpada do farol direito queimada durante o diagnóstico",
+                      "servicosDesejados": [
+                        {
+                          "id": 1,
+                          "servico": "Revisão de freios",
+                          "aprovado": true,
+                          "precoTotal": 320,
+                          "precoHorasTecnicas": 120,
+                          "pecas": [
+                            {
+                              "peca": "Pastilha de freio dianteira",
+                              "ean": 7891234560001,
+                              "quantidade": 4,
+                              "precoUnitario": 35,
+                              "precoTotal": 140
+                            }
+                          ],
+                          "insumos": [
+                            {
+                              "insumo": "Fluido de freio DOT 4",
+                              "ean": 7891234560010,
+                              "quantidade": 1,
+                              "precoUnitario": 25,
+                              "precoTotal": 25
+                            }
+                          ]
+                        },
+                        {
+                          "id": 2,
+                          "servico": "Balanceamento de rodas",
+                          "aprovado": true,
+                          "precoTotal": 165,
+                          "precoHorasTecnicas": 80,
+                          "pecas": [],
+                          "insumos": []
+                        }
+                      ],
+                      "servicosNecessarios": [
+                        {
+                          "id": 3,
+                          "servico": "Troca de disco de freio",
+                          "aprovado": true,
+                          "precoTotal": 280,
+                          "precoHorasTecnicas": 100,
+                          "pecas": [
+                            {
+                              "peca": "Disco de freio dianteiro",
+                              "ean": 7891234560020,
+                              "quantidade": 2,
+                              "precoUnitario": 90,
+                              "precoTotal": 180
+                            }
+                          ],
+                          "insumos": []
+                        }
+                      ],
+                      "servicosAdicionais": [
+                        {
+                          "id": 4,
+                          "servico": "Troca de lâmpada do farol",
+                          "aprovado": true,
+                          "precoTotal": 45,
+                          "precoHorasTecnicas": 21,
+                          "pecas": [
+                            {
+                              "peca": "Lâmpada de Farol H7 Luz Baixa",
+                              "ean": 7891342130177,
+                              "quantidade": 1,
+                              "precoUnitario": 24,
+                              "precoTotal": 24
+                            }
+                          ],
+                          "insumos": []
+                        }
+                      ],
+                      "historico": [
+                        {
+                          "status": "RECEBIDA",
+                          "createdAt": "2024-06-01T10:00:00"
+                        },
+                        {
+                          "status": "EM_DIAGNOSTICO",
+                          "createdAt": "2024-06-01T11:30:00"
+                        },
+                        {
+                          "status": "AGUARDANDO_APROVACAO",
+                          "createdAt": "2024-06-01T14:00:00"
+                        },
+                        {
+                          "status": "AGUARDANDO_AQUISICAO",
+                          "createdAt": "2024-06-01T15:30:00"
+                        }
+                      ]
+                    }
                   }
                 }
               }
@@ -5322,6 +5444,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -6173,6 +6296,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -7028,6 +7152,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -7447,6 +7572,7 @@
                         "EM_DIAGNOSTICO",
                         "AGUARDANDO_APROVACAO",
                         "APROVADA",
+                        "AGUARDANDO_AQUISICAO",
                         "EM_EXECUCAO",
                         "FINALIZADA",
                         "ENTREGUE",
@@ -21181,6 +21307,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -21334,6 +21461,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -21760,6 +21888,7 @@
                     "EM_DIAGNOSTICO",
                     "AGUARDANDO_APROVACAO",
                     "APROVADA",
+                    "AGUARDANDO_AQUISICAO",
                     "EM_EXECUCAO",
                     "FINALIZADA",
                     "ENTREGUE",
@@ -21849,6 +21978,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -22298,6 +22428,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -22718,6 +22849,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -23167,6 +23299,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -23587,6 +23720,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -23674,6 +23808,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -24110,6 +24245,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -24546,6 +24682,7 @@
               "EM_DIAGNOSTICO",
               "AGUARDANDO_APROVACAO",
               "APROVADA",
+              "AGUARDANDO_AQUISICAO",
               "EM_EXECUCAO",
               "FINALIZADA",
               "ENTREGUE",
@@ -26247,6 +26384,120 @@
           ]
         }
       },
+      "ApproveOSAguardandoAquisicaoResponse": {
+        "value": {
+          "id": 1,
+          "status": "AGUARDANDO_AQUISICAO",
+          "clienteId": 1,
+          "clienteNomeSocial": "João Silva",
+          "clienteDocumento": "123.456.789-00",
+          "veiculoId": 1,
+          "veiculoPlaca": "ABC1D23",
+          "complexidade": "MEDIA",
+          "sintomas": "Barulho ao frear e vibração no volante em altas velocidades",
+          "tagChave": "001",
+          "criadaEm": "2024-06-01T10:00:00",
+          "precoTotal": 810,
+          "precoTotalAprovado": 810,
+          "precoServicosDesejados": 485,
+          "precoServicosNecessarios": 280,
+          "precoServicosAdicionais": 45,
+          "justificativaNecessarios": "Identificado desgaste excessivo no disco de freio durante o diagnóstico",
+          "justificativaAdicionais": "Mecânico identificou lâmpada do farol direito queimada durante o diagnóstico",
+          "servicosDesejados": [
+            {
+              "id": 1,
+              "servico": "Revisão de freios",
+              "aprovado": true,
+              "precoTotal": 320,
+              "precoHorasTecnicas": 120,
+              "pecas": [
+                {
+                  "peca": "Pastilha de freio dianteira",
+                  "ean": 7891234560001,
+                  "quantidade": 4,
+                  "precoUnitario": 35,
+                  "precoTotal": 140
+                }
+              ],
+              "insumos": [
+                {
+                  "insumo": "Fluido de freio DOT 4",
+                  "ean": 7891234560010,
+                  "quantidade": 1,
+                  "precoUnitario": 25,
+                  "precoTotal": 25
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "servico": "Balanceamento de rodas",
+              "aprovado": true,
+              "precoTotal": 165,
+              "precoHorasTecnicas": 80,
+              "pecas": [],
+              "insumos": []
+            }
+          ],
+          "servicosNecessarios": [
+            {
+              "id": 3,
+              "servico": "Troca de disco de freio",
+              "aprovado": true,
+              "precoTotal": 280,
+              "precoHorasTecnicas": 100,
+              "pecas": [
+                {
+                  "peca": "Disco de freio dianteiro",
+                  "ean": 7891234560020,
+                  "quantidade": 2,
+                  "precoUnitario": 90,
+                  "precoTotal": 180
+                }
+              ],
+              "insumos": []
+            }
+          ],
+          "servicosAdicionais": [
+            {
+              "id": 4,
+              "servico": "Troca de lâmpada do farol",
+              "aprovado": true,
+              "precoTotal": 45,
+              "precoHorasTecnicas": 21,
+              "pecas": [
+                {
+                  "peca": "Lâmpada de Farol H7 Luz Baixa",
+                  "ean": 7891342130177,
+                  "quantidade": 1,
+                  "precoUnitario": 24,
+                  "precoTotal": 24
+                }
+              ],
+              "insumos": []
+            }
+          ],
+          "historico": [
+            {
+              "status": "RECEBIDA",
+              "createdAt": "2024-06-01T10:00:00"
+            },
+            {
+              "status": "EM_DIAGNOSTICO",
+              "createdAt": "2024-06-01T11:30:00"
+            },
+            {
+              "status": "AGUARDANDO_APROVACAO",
+              "createdAt": "2024-06-01T14:00:00"
+            },
+            {
+              "status": "AGUARDANDO_AQUISICAO",
+              "createdAt": "2024-06-01T15:30:00"
+            }
+          ]
+        }
+      },
       "ApproveOSRequest": {
         "value": {
           "servicosAprovados": [
@@ -27410,6 +27661,120 @@
             },
             {
               "status": "APROVADA",
+              "createdAt": "2024-06-01T15:30:00"
+            }
+          ]
+        }
+      },
+      "200ApproveOSAguardandoAquisicaoResponse": {
+        "value": {
+          "id": 1,
+          "status": "AGUARDANDO_AQUISICAO",
+          "clienteId": 1,
+          "clienteNomeSocial": "João Silva",
+          "clienteDocumento": "123.456.789-00",
+          "veiculoId": 1,
+          "veiculoPlaca": "ABC1D23",
+          "complexidade": "MEDIA",
+          "sintomas": "Barulho ao frear e vibração no volante em altas velocidades",
+          "tagChave": "001",
+          "criadaEm": "2024-06-01T10:00:00",
+          "precoTotal": 810,
+          "precoTotalAprovado": 810,
+          "precoServicosDesejados": 485,
+          "precoServicosNecessarios": 280,
+          "precoServicosAdicionais": 45,
+          "justificativaNecessarios": "Identificado desgaste excessivo no disco de freio durante o diagnóstico",
+          "justificativaAdicionais": "Mecânico identificou lâmpada do farol direito queimada durante o diagnóstico",
+          "servicosDesejados": [
+            {
+              "id": 1,
+              "servico": "Revisão de freios",
+              "aprovado": true,
+              "precoTotal": 320,
+              "precoHorasTecnicas": 120,
+              "pecas": [
+                {
+                  "peca": "Pastilha de freio dianteira",
+                  "ean": 7891234560001,
+                  "quantidade": 4,
+                  "precoUnitario": 35,
+                  "precoTotal": 140
+                }
+              ],
+              "insumos": [
+                {
+                  "insumo": "Fluido de freio DOT 4",
+                  "ean": 7891234560010,
+                  "quantidade": 1,
+                  "precoUnitario": 25,
+                  "precoTotal": 25
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "servico": "Balanceamento de rodas",
+              "aprovado": true,
+              "precoTotal": 165,
+              "precoHorasTecnicas": 80,
+              "pecas": [],
+              "insumos": []
+            }
+          ],
+          "servicosNecessarios": [
+            {
+              "id": 3,
+              "servico": "Troca de disco de freio",
+              "aprovado": true,
+              "precoTotal": 280,
+              "precoHorasTecnicas": 100,
+              "pecas": [
+                {
+                  "peca": "Disco de freio dianteiro",
+                  "ean": 7891234560020,
+                  "quantidade": 2,
+                  "precoUnitario": 90,
+                  "precoTotal": 180
+                }
+              ],
+              "insumos": []
+            }
+          ],
+          "servicosAdicionais": [
+            {
+              "id": 4,
+              "servico": "Troca de lâmpada do farol",
+              "aprovado": true,
+              "precoTotal": 45,
+              "precoHorasTecnicas": 21,
+              "pecas": [
+                {
+                  "peca": "Lâmpada de Farol H7 Luz Baixa",
+                  "ean": 7891342130177,
+                  "quantidade": 1,
+                  "precoUnitario": 24,
+                  "precoTotal": 24
+                }
+              ],
+              "insumos": []
+            }
+          ],
+          "historico": [
+            {
+              "status": "RECEBIDA",
+              "createdAt": "2024-06-01T10:00:00"
+            },
+            {
+              "status": "EM_DIAGNOSTICO",
+              "createdAt": "2024-06-01T11:30:00"
+            },
+            {
+              "status": "AGUARDANDO_APROVACAO",
+              "createdAt": "2024-06-01T14:00:00"
+            },
+            {
+              "status": "AGUARDANDO_AQUISICAO",
               "createdAt": "2024-06-01T15:30:00"
             }
           ]
