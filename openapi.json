@@ -556,8 +556,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
           }
@@ -1011,8 +1009,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.querystring.placa": "method.request.querystring.placa",
             "integration.request.querystring.documentoCliente": "method.request.querystring.documentoCliente",
@@ -1797,8 +1793,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -2583,8 +2577,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -3452,8 +3444,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -4276,8 +4266,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -5372,8 +5360,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -6224,8 +6210,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -7080,8 +7064,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -7500,8 +7482,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -7970,8 +7950,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.osId": "method.request.path.osId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -8438,8 +8416,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
           }
@@ -8901,8 +8877,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.querystring.page": "method.request.querystring.page",
             "integration.request.querystring.size": "method.request.querystring.size",
@@ -9377,8 +9351,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.clienteId": "method.request.path.clienteId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -9741,8 +9713,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.clienteId": "method.request.path.clienteId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -10038,8 +10008,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.clienteId": "method.request.path.clienteId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -10404,8 +10372,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.documento": "method.request.path.documento",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -10753,8 +10719,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
           }
@@ -11106,8 +11070,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.querystring.page": "method.request.querystring.page",
             "integration.request.querystring.size": "method.request.querystring.size",
@@ -11483,8 +11445,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.veiculoId": "method.request.path.veiculoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -11790,8 +11750,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.veiculoId": "method.request.path.veiculoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -12087,8 +12045,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.veiculoId": "method.request.path.veiculoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -12396,8 +12352,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.placa": "method.request.path.placa",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -12978,8 +12932,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
           }
@@ -13527,8 +13479,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.pecaId": "method.request.path.pecaId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -13947,8 +13897,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.pecaId": "method.request.path.pecaId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -14244,8 +14192,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.pecaId": "method.request.path.pecaId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -14792,8 +14738,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
           }
@@ -15361,8 +15305,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.insumoId": "method.request.path.insumoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -15763,8 +15705,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.insumoId": "method.request.path.insumoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -16060,8 +16000,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.insumoId": "method.request.path.insumoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -16377,8 +16315,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.ean": "method.request.path.ean",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -16748,8 +16684,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
           }
@@ -17118,8 +17052,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
           }
@@ -17501,8 +17433,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
           }
@@ -17862,8 +17792,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.querystring.page": "method.request.querystring.page",
             "integration.request.querystring.size": "method.request.querystring.size",
@@ -18294,8 +18222,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.servicoId": "method.request.path.servicoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -18620,8 +18546,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.servicoId": "method.request.path.servicoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
@@ -18917,8 +18841,6 @@
             }
           },
           "passthroughBehavior": "when_no_match",
-          "connectionType": "VPC_LINK",
-          "connectionId": "txypyt",
           "requestParameters": {
             "integration.request.path.servicoId": "method.request.path.servicoId",
             "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
