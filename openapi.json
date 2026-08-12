@@ -44,7 +44,7 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-c42f1eb093-5725a592e7d776ee.elb.us-east-1.amazonaws.com:9000/ordensDeServico",
+          "uri": "http://k8s-techchal-techchal-c42f1eb093-5725a592e7d776ee.elb.us-east-1.amazonaws.com:9000/realms/g52/protocol/openid-connect/token",
           "passthroughBehavior": "when_no_match",
           "connectionType": "INTERNET"
         }
