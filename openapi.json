@@ -14,7 +14,7 @@
   "paths": {
     "/auth/token": {
       "post": {
-        "summary": "Obter Keycloak access token",
+        "summary": "Obter access token",
         "requestBody": {
           "required": true,
           "content": {
