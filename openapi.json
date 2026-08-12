@@ -12,6 +12,44 @@
     }
   ],
   "paths": {
+    "/auth/token": {
+      "post": {
+        "summary": "Obter Keycloak access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "string"
+                  },
+                  "client_secret": {
+                    "type": "string"
+                  },
+                  "grant_type": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "POST",
+          "uri": "http://k8s-techchal-techchal-c42f1eb093-5725a592e7d776ee.elb.us-east-1.amazonaws.com:9000/ordensDeServico",
+          "passthroughBehavior": "when_no_match",
+          "connectionType": "INTERNET"
+        }
+      }
+    },
     "/ordensDeServico": {
       "post": {
         "tags": [
