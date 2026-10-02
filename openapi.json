@@ -12,24 +12,50 @@
     }
   ],
   "paths": {
-    "/auth/token": {
+    "/auth": {
       "post": {
-        "summary": "Obter access token",
+        "tags": [
+          "Autenticação"
+        ],
+        "summary": "Autenticar por CPF",
+        "description": "Valida o CPF, verifica se o cliente existe e está habilitado e devolve um JWT (RS256)\npara consumo das rotas protegidas. Envie o token no header `Authorization: Bearer <token>`.\n",
+        "operationId": "post/auth",
+        "security": [],
+        "parameters": [
+          {
+            "name": "x-correlationid",
+            "in": "header",
+            "description": "Código para identificar requisição",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
-            "application/x-www-form-urlencoded": {
+            "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "cpf"
+                ],
                 "properties": {
-                  "client_id": {
-                    "type": "string"
-                  },
-                  "client_secret": {
-                    "type": "string"
-                  },
-                  "grant_type": {
-                    "type": "string"
+                  "cpf": {
+                    "type": "string",
+                    "description": "CPF do cliente, com ou sem máscara",
+                    "example": "555.632.710-64"
+                  }
+                }
+              },
+              "examples": {
+                "AuthRequest": {
+                  "summary": "Exemplo de autenticação por CPF",
+                  "value": {
+                    "cpf": "555.632.710-64"
                   }
                 }
               }
@@ -38,15 +64,437 @@
         },
         "responses": {
           "200": {
-            "description": "Token"
+            "description": "Token emitido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "JWT (RS256) a ser enviado no header `Authorization: Bearer <token>`"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "description": "Tipo do token",
+                      "example": "Bearer"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "description": "Validade do token em segundos",
+                      "example": 3600
+                    }
+                  }
+                },
+                "examples": {
+                  "AuthResponse": {
+                    "summary": "Exemplo de token emitido",
+                    "value": {
+                      "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk4dE5...",
+                      "token_type": "Bearer",
+                      "expires_in": 3600
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "400": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "401": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "403": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Forbidden"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "500": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "503": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Service Unavailable"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "x-amazon-apigateway-integration": {
-          "type": "http_proxy",
+          "type": "aws_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-keycloak-971d4890c2-36109c660f00bafc.elb.us-east-1.amazonaws.com:9000/realms/g52/protocol/openid-connect/token",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:g52-lambda-auth/invocations",
           "passthroughBehavior": "when_no_match",
-          "connectionType": "INTERNET"
+          "timeoutInMillis": 14000
+        }
+      }
+    },
+    "/auth/token": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "summary": "Obter token administrativo (client_credentials)",
+        "description": "Token da equipe da oficina (OAuth2 `client_credentials`), com acesso a todas as rotas.\nAs credenciais podem ir no corpo ou no header `Authorization: Basic base64(client_id:client_secret)`.\nO token de cliente (`POST /auth`) acessa apenas a consulta e a aprovação das próprias OS.\n",
+        "operationId": "post/auth/token",
+        "security": [],
+        "parameters": [
+          {
+            "name": "x-correlationid",
+            "in": "header",
+            "description": "Código para identificar requisição",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "grant_type"
+                ],
+                "properties": {
+                  "grant_type": {
+                    "type": "string",
+                    "enum": [
+                      "client_credentials"
+                    ]
+                  },
+                  "client_id": {
+                    "type": "string",
+                    "description": "Opcional se enviado no header Authorization (Basic)",
+                    "example": "g52-oficina-admin"
+                  },
+                  "client_secret": {
+                    "type": "string",
+                    "description": "Opcional se enviado no header Authorization (Basic)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token emitido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "JWT (RS256) a ser enviado no header `Authorization: Bearer <token>`"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "description": "Tipo do token",
+                      "example": "Bearer"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "description": "Validade do token em segundos",
+                      "example": 3600
+                    }
+                  }
+                },
+                "examples": {
+                  "AuthResponse": {
+                    "summary": "Exemplo de token emitido",
+                    "value": {
+                      "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk4dE5...",
+                      "token_type": "Bearer",
+                      "expires_in": 3600
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "400": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "401": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "500": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:g52-lambda-auth/invocations",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 14000
+        }
+      }
+    },
+    "/.well-known/jwks.json": {
+      "get": {
+        "tags": [
+          "Autenticação"
+        ],
+        "summary": "Chave pública do JWT (JWKS)",
+        "description": "Chave pública RS256 usada para validar os tokens emitidos em `POST /auth`.",
+        "operationId": "get/jwks",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "JWKS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "keys": {
+                      "type": "array",
+                      "description": "Chaves públicas (JWK) para validação dos tokens",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kty": {
+                            "type": "string",
+                            "example": "RSA"
+                          },
+                          "kid": {
+                            "type": "string",
+                            "description": "Identificador da chave (thumbprint RFC 7638), presente no header do JWT"
+                          },
+                          "use": {
+                            "type": "string",
+                            "example": "sig"
+                          },
+                          "alg": {
+                            "type": "string",
+                            "example": "RS256"
+                          },
+                          "n": {
+                            "type": "string",
+                            "description": "Módulo da chave RSA (base64url)"
+                          },
+                          "e": {
+                            "type": "string",
+                            "description": "Expoente da chave RSA (base64url)",
+                            "example": "AQAB"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:g52-lambda-auth/invocations",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 14000
         }
       }
     },
@@ -583,6 +1031,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -1036,6 +1489,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -1820,6 +2278,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -2604,6 +3067,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -3471,6 +3939,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -4293,6 +4766,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -5387,6 +5865,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -6237,6 +6720,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -7091,6 +7579,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -7509,6 +8002,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -7977,6 +8475,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -8443,6 +8946,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -8904,6 +9412,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -9378,6 +9891,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -9740,6 +10258,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -10035,6 +10558,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -10399,6 +10927,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -10746,6 +11279,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -11097,6 +11635,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -11472,6 +12015,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -11777,6 +12325,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -12072,6 +12625,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -12379,6 +12937,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -12959,6 +13522,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -13506,6 +14074,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -13924,6 +14497,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -14219,6 +14797,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -14765,6 +15348,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -15332,6 +15920,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -15732,6 +16325,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -16027,6 +16625,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -16342,6 +16945,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -16711,6 +17319,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -17079,6 +17692,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -17460,6 +18078,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -17819,6 +18442,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -18249,6 +18877,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -18573,6 +19206,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -18868,6 +19506,11 @@
             }
           }
         },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "timeoutInMillis": 14000,
           "type": "http_proxy",
@@ -18889,6 +19532,21 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "LambdaAuthorizer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "JWT emitido em `POST /auth` (cliente) ou `POST /auth/token` (administrativo), enviado como `Authorization: Bearer <token>`",
+        "x-amazon-apigateway-authtype": "custom",
+        "x-amazon-apigateway-authorizer": {
+          "type": "token",
+          "authorizerUri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:g52-lambda-auth-authorizer/invocations",
+          "authorizerResultTtlInSeconds": 300,
+          "identityValidationExpression": "^[Bb]earer [-0-9a-zA-Z._~+/]+=*$"
+        }
+      }
+    },
     "parameters": {
       "x_correlationid": {
         "name": "x-correlationid",
@@ -18913,6 +19571,100 @@
       }
     },
     "schemas": {
+      "AuthRequest": {
+        "type": "object",
+        "required": [
+          "cpf"
+        ],
+        "properties": {
+          "cpf": {
+            "type": "string",
+            "description": "CPF do cliente, com ou sem máscara",
+            "example": "555.632.710-64"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "JWT (RS256) a ser enviado no header `Authorization: Bearer <token>`"
+          },
+          "token_type": {
+            "type": "string",
+            "description": "Tipo do token",
+            "example": "Bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "description": "Validade do token em segundos",
+            "example": 3600
+          }
+        }
+      },
+      "JwksResponse": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "description": "Chaves públicas (JWK) para validação dos tokens",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kty": {
+                  "type": "string",
+                  "example": "RSA"
+                },
+                "kid": {
+                  "type": "string",
+                  "description": "Identificador da chave (thumbprint RFC 7638), presente no header do JWT"
+                },
+                "use": {
+                  "type": "string",
+                  "example": "sig"
+                },
+                "alg": {
+                  "type": "string",
+                  "example": "RS256"
+                },
+                "n": {
+                  "type": "string",
+                  "description": "Módulo da chave RSA (base64url)"
+                },
+                "e": {
+                  "type": "string",
+                  "description": "Expoente da chave RSA (base64url)",
+                  "example": "AQAB"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ClientCredentialsRequest": {
+        "type": "object",
+        "required": [
+          "grant_type"
+        ],
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "enum": [
+              "client_credentials"
+            ]
+          },
+          "client_id": {
+            "type": "string",
+            "description": "Opcional se enviado no header Authorization (Basic)",
+            "example": "g52-oficina-admin"
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "Opcional se enviado no header Authorization (Basic)"
+          }
+        }
+      },
       "FindClienteResponse": {
         "type": "object",
         "properties": {
@@ -25072,6 +25824,20 @@
           "exceptionType": "Gateway Timeout"
         }
       },
+      "AuthRequest": {
+        "summary": "Exemplo de autenticação por CPF",
+        "value": {
+          "cpf": "555.632.710-64"
+        }
+      },
+      "AuthResponse": {
+        "summary": "Exemplo de token emitido",
+        "value": {
+          "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk4dE5...",
+          "token_type": "Bearer",
+          "expires_in": 3600
+        }
+      },
       "FindClienteResponse": {
         "summary": "Exemplo de resposta para consulta de um cliente",
         "value": {
@@ -26929,6 +27695,14 @@
               "createdAt": "2024-06-02T10:00:00"
             }
           ]
+        }
+      },
+      "200AuthResponse": {
+        "summary": "Exemplo de token emitido",
+        "value": {
+          "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk4dE5...",
+          "token_type": "Bearer",
+          "expires_in": 3600
         }
       },
       "200ListOSResponse": {
@@ -28910,7 +29684,13 @@
     "UNAUTHORIZED": {
       "statusCode": 401,
       "responseTemplates": {
-        "application/json": "{\n \"message\": \"Expired Token\" \n }"
+        "application/json": "{\"message\": \"Token ausente, inválido ou expirado. Autentique-se em POST /auth\", \"exceptionType\": \"Unauthorized\"}"
+      }
+    },
+    "ACCESS_DENIED": {
+      "statusCode": 403,
+      "responseTemplates": {
+        "application/json": "{\"message\": \"Acesso negado\", \"exceptionType\": \"Forbidden\"}"
       }
     }
   },
