@@ -34,18 +34,18 @@ jobs:
           <!DOCTYPE html>
           <html>
             <head>
-              <title>G52 Tech Challenge API</title>
+              <title>API G52 Tech Challenge</title>
               <meta charset="utf-8"/>
               <meta name="viewport" content="width=device-width, initial-scale=1">
               <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
               <!-- Standard favicons -->
-              <link rel="icon" href="/favicon.ico" sizes="32x32">
-              <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
-              <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
+              <link rel="icon" href="favicon.ico" sizes="32x32">
+              <link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32">
+              <link rel="icon" href="favicon-16x16.png" type="image/png" sizes="16x16">
               <!-- Apple devices -->
-              <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+              <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
               <!-- Android / PWA -->
-              <link rel="manifest" href="/site.webmanifest">
+              <link rel="manifest" href="site.webmanifest">
               <meta name="theme-color" content="#ffffff">
               <style>
                 body { margin: 0; padding: 0; }
