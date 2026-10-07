@@ -243,7 +243,7 @@
         "x-amazon-apigateway-integration": {
           "type": "aws_proxy",
           "httpMethod": "POST",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:g52-lambda-auth/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:${stageVariables.authFunction}/invocations",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 14000
         }
@@ -426,7 +426,7 @@
         "x-amazon-apigateway-integration": {
           "type": "aws_proxy",
           "httpMethod": "POST",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:g52-lambda-auth/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:${stageVariables.authFunction}/invocations",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 14000
         }
@@ -492,7 +492,7 @@
         "x-amazon-apigateway-integration": {
           "type": "aws_proxy",
           "httpMethod": "POST",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:g52-lambda-auth/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:${stageVariables.authFunction}/invocations",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 14000
         }
@@ -1040,7 +1040,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -1498,7 +1498,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -2287,7 +2287,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -3076,7 +3076,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}/diagnosticar",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}/diagnosticar",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -3948,7 +3948,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}/adicionarServicos",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}/adicionarServicos",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -4775,7 +4775,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}/solicitarAprovacao",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}/solicitarAprovacao",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -5874,7 +5874,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}/aprovar",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}/aprovar",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -6729,7 +6729,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}/executar",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}/executar",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -7588,7 +7588,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}/finalizar",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}/finalizar",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -8011,7 +8011,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}/cancelar",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}/cancelar",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -8484,7 +8484,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/ordensDeServico/{osId}/entregar",
+          "uri": "http://${stageVariables.appHost}/ordensDeServico/{osId}/entregar",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -8955,7 +8955,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/clientes",
+          "uri": "http://${stageVariables.appHost}/clientes",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -9421,7 +9421,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/clientes",
+          "uri": "http://${stageVariables.appHost}/clientes",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -9900,7 +9900,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "PUT",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/clientes/{clienteId}",
+          "uri": "http://${stageVariables.appHost}/clientes/{clienteId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -10267,7 +10267,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/clientes/{clienteId}",
+          "uri": "http://${stageVariables.appHost}/clientes/{clienteId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -10567,7 +10567,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "DELETE",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/clientes/{clienteId}",
+          "uri": "http://${stageVariables.appHost}/clientes/{clienteId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -10936,7 +10936,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/clientes/documento/{documento}",
+          "uri": "http://${stageVariables.appHost}/clientes/documento/{documento}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -11288,7 +11288,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/veiculos",
+          "uri": "http://${stageVariables.appHost}/veiculos",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -11644,7 +11644,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/veiculos",
+          "uri": "http://${stageVariables.appHost}/veiculos",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -12024,7 +12024,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "PUT",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/veiculos/{veiculoId}",
+          "uri": "http://${stageVariables.appHost}/veiculos/{veiculoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -12334,7 +12334,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/veiculos/{veiculoId}",
+          "uri": "http://${stageVariables.appHost}/veiculos/{veiculoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -12634,7 +12634,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "DELETE",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/veiculos/{veiculoId}",
+          "uri": "http://${stageVariables.appHost}/veiculos/{veiculoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -12946,7 +12946,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/veiculos/placa/{placa}",
+          "uri": "http://${stageVariables.appHost}/veiculos/placa/{placa}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -13531,7 +13531,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/pecas",
+          "uri": "http://${stageVariables.appHost}/produtos/pecas",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -14083,7 +14083,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "PUT",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/pecas/{pecaId}",
+          "uri": "http://${stageVariables.appHost}/produtos/pecas/{pecaId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -14506,7 +14506,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/pecas/{pecaId}",
+          "uri": "http://${stageVariables.appHost}/produtos/pecas/{pecaId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -14806,7 +14806,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "DELETE",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/pecas/{pecaId}",
+          "uri": "http://${stageVariables.appHost}/produtos/pecas/{pecaId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -15357,7 +15357,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/insumos",
+          "uri": "http://${stageVariables.appHost}/produtos/insumos",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -15929,7 +15929,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "PUT",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/insumos/{insumoId}",
+          "uri": "http://${stageVariables.appHost}/produtos/insumos/{insumoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -16334,7 +16334,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/insumos/{insumoId}",
+          "uri": "http://${stageVariables.appHost}/produtos/insumos/{insumoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -16634,7 +16634,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "DELETE",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/insumos/{insumoId}",
+          "uri": "http://${stageVariables.appHost}/produtos/insumos/{insumoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -16954,7 +16954,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/ean/{ean}",
+          "uri": "http://${stageVariables.appHost}/produtos/ean/{ean}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -17328,7 +17328,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/estoque/entrada",
+          "uri": "http://${stageVariables.appHost}/produtos/estoque/entrada",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -17701,7 +17701,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/produtos/estoque/saida",
+          "uri": "http://${stageVariables.appHost}/produtos/estoque/saida",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -18087,7 +18087,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/servicos",
+          "uri": "http://${stageVariables.appHost}/servicos",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -18451,7 +18451,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/servicos",
+          "uri": "http://${stageVariables.appHost}/servicos",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -18886,7 +18886,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "PUT",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/servicos/{servicoId}",
+          "uri": "http://${stageVariables.appHost}/servicos/{servicoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -19215,7 +19215,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/servicos/{servicoId}",
+          "uri": "http://${stageVariables.appHost}/servicos/{servicoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -19515,7 +19515,7 @@
           "timeoutInMillis": 14000,
           "type": "http_proxy",
           "httpMethod": "DELETE",
-          "uri": "http://k8s-techchal-techchal-643705023b-ffdfa1d9519c687f.elb.us-east-1.amazonaws.com:8080/servicos/{servicoId}",
+          "uri": "http://${stageVariables.appHost}/servicos/{servicoId}",
           "responses": {
             "default": {
               "statusCode": "503"
@@ -19541,7 +19541,7 @@
         "x-amazon-apigateway-authtype": "custom",
         "x-amazon-apigateway-authorizer": {
           "type": "token",
-          "authorizerUri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:g52-lambda-auth-authorizer/invocations",
+          "authorizerUri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:679084116705:function:${stageVariables.authorizerFunction}/invocations",
           "authorizerResultTtlInSeconds": 300,
           "identityValidationExpression": "^[Bb]earer [-0-9a-zA-Z._~+/]+=*$"
         }
