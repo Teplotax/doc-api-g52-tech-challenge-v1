@@ -19529,6 +19529,57 @@
         },
         "x-amazon-apigateway-request-validator": "params-only"
       }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Monitoramento"
+        ],
+        "summary": "Healthcheck da aplicação",
+        "description": "Status da aplicação e do banco (actuator), usado pelo monitor de uptime. Público.",
+        "operationId": "get/health",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Aplicação no ar"
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "503": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Service Unavailable"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "GET",
+          "uri": "http://${stageVariables.appHost}/actuator/health",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 10000
+        }
+      }
     }
   },
   "components": {
