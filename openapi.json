@@ -10951,6 +10951,329 @@
         "x-amazon-apigateway-request-validator": "params-only"
       }
     },
+    "/clientes/documento/{documento}/veiculos": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Listar Veículos do Cliente por documento",
+        "description": "Retorna os veículos de um cliente pelo número de CPF ou CNPJ.\n\nCom token de cliente (CPF), só é possível consultar os próprios veículos. Um documento de outro cliente responde `404`.\n",
+        "operationId": "get/clientes/documento/{documento}/veiculos",
+        "parameters": [
+          {
+            "name": "x-correlationid",
+            "in": "header",
+            "description": "Código para identificar requisição",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Uso de Bearer token para Autorização da API",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "documento",
+            "in": "path",
+            "description": "Número do documento de identificação",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "55563271064"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Veículos do cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "Veículos do cliente",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Identificador do veículo"
+                      },
+                      "clienteId": {
+                        "type": "integer",
+                        "description": "Identificador do cliente proprietário do veículo"
+                      },
+                      "placa": {
+                        "type": "string",
+                        "description": "Placa do veículo"
+                      },
+                      "marca": {
+                        "type": "string",
+                        "description": "Marca do veículo"
+                      },
+                      "modelo": {
+                        "type": "string",
+                        "description": "Modelo do veículo"
+                      },
+                      "cor": {
+                        "type": "string",
+                        "description": "Cor do veículo"
+                      },
+                      "ano": {
+                        "type": "integer",
+                        "description": "Ano de fabricação do veículo"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "ListVeiculosClienteResponse": {
+                    "summary": "Exemplo de resposta para consulta dos veículos de um cliente",
+                    "value": [
+                      {
+                        "id": 1,
+                        "clienteId": 1,
+                        "placa": "ABC1A23",
+                        "marca": "Toyota",
+                        "modelo": "Corolla",
+                        "cor": "Prata",
+                        "ano": 2020
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "400": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "401": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "403": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Forbidden"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "404": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "405": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Method Not Allowed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "500": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "exceptionType": {
+                      "type": "string",
+                      "description": "Exception type"
+                    }
+                  }
+                },
+                "examples": {
+                  "503": {
+                    "value": {
+                      "message": "Conteúdo da mensagem",
+                      "exceptionType": "Service Unavailable"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "LambdaAuthorizer": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "timeoutInMillis": 14000,
+          "type": "http_proxy",
+          "httpMethod": "GET",
+          "uri": "http://${stageVariables.appHost}/clientes/documento/{documento}/veiculos",
+          "responses": {
+            "default": {
+              "statusCode": "503"
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestParameters": {
+            "integration.request.path.documento": "method.request.path.documento",
+            "integration.request.header.x-correlationid": "method.request.header.x-correlationid"
+          }
+        },
+        "x-amazon-apigateway-request-validator": "params-only"
+      }
+    },
     "/veiculos": {
       "post": {
         "tags": [
@@ -20394,6 +20717,43 @@
           }
         }
       },
+      "ListVeiculosClienteResponse": {
+        "type": "array",
+        "description": "Veículos do cliente",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "description": "Identificador do veículo"
+            },
+            "clienteId": {
+              "type": "integer",
+              "description": "Identificador do cliente proprietário do veículo"
+            },
+            "placa": {
+              "type": "string",
+              "description": "Placa do veículo"
+            },
+            "marca": {
+              "type": "string",
+              "description": "Marca do veículo"
+            },
+            "modelo": {
+              "type": "string",
+              "description": "Modelo do veículo"
+            },
+            "cor": {
+              "type": "string",
+              "description": "Cor do veículo"
+            },
+            "ano": {
+              "type": "integer",
+              "description": "Ano de fabricação do veículo"
+            }
+          }
+        }
+      },
       "FindPecaResponse": {
         "type": "object",
         "properties": {
@@ -26164,6 +26524,20 @@
           "totalPages": 1
         }
       },
+      "ListVeiculosClienteResponse": {
+        "summary": "Exemplo de resposta para consulta dos veículos de um cliente",
+        "value": [
+          {
+            "id": 1,
+            "clienteId": 1,
+            "placa": "ABC1A23",
+            "marca": "Toyota",
+            "modelo": "Corolla",
+            "cor": "Prata",
+            "ano": 2020
+          }
+        ]
+      },
       "FindPecaResponse": {
         "summary": "Exemplo de resposta para consulta de uma peça",
         "value": {
@@ -29074,6 +29448,20 @@
             "cep": "01432000"
           }
         }
+      },
+      "200ListVeiculosClienteResponse": {
+        "summary": "Exemplo de resposta para consulta dos veículos de um cliente",
+        "value": [
+          {
+            "id": 1,
+            "clienteId": 1,
+            "placa": "ABC1A23",
+            "marca": "Toyota",
+            "modelo": "Corolla",
+            "cor": "Prata",
+            "ano": 2020
+          }
+        ]
       },
       "200ListVeiculosResponse": {
         "summary": "Exemplo de resposta paginada para consulta de veículos",
